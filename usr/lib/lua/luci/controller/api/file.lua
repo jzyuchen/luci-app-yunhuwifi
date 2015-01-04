@@ -9,9 +9,15 @@ function index()
     page.sysauth_authenticator = "jsonauth"
     page.index = true
     entry({"api", "file"}, firstchild(), _(""), 300)
+	entry({"api", "file", "list"}, call("getList"), _(""), 301)
     entry({"api", "file", "check_file_exists"}, call("checkFileExists"), _(""), 301)
 	entry({"api", "file", "upload"}, call("upload"), _(""), 302)
 	entry({"api", "file", "download"}, call("download"), _(""), 303)
+	entry({"api", "file", "rename"}, call("rename"), _(""), 304)
+	entry({"api", "file", "copy"}, call("copy"), _(""), 304)
+	entry({"api", "file", "move"}, call("move"), _(""), 304)
+	entry({"api", "file", "mkdir"}, call("mkdir"), _(""), 304)
+	entry({"api", "file", "rmdir"}, call("rmdir"), _(""), 304)
 end
 
 local LuciHttp = require("luci.http")

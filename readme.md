@@ -24,6 +24,7 @@ luci.controller.api.file		-- 实现文件管理
 luci.controller.api.network		-- 实现网络管理
 	lan_info			-- 获取或设置Lan口信息
 	wan_info			-- 获取或设置Wan口信息
+	is_internet_available	-- 当前是否可以连通互联网
 	
 luci.controller.api.wireless	-- 实现无线管理
 	list				-- 获取所有无线SSID
