@@ -1,0 +1,65 @@
+<%#
+LuCI - Lua Configuration Interface
+Copyright 2008 Steven Barth <steven@midlink.org>
+Copyright 2008-2011 Jo-Philipp Wich <xm@subsignal.org>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+$Id: index.htm 7810 2011-10-28 15:15:27Z jow $
+
+-%>
+<%
+	local device = require "luci.tools.device"
+%>
+
+<%+header%>
+<h2>
+<a id="content" name="content">扩展应用</a>
+</h2>
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#installed">已安装的应用</a></li>
+	<li><a href="#avaliable">全部应用</a></li>
+</ul>
+<div class="tab-content">
+	<div id="installed" class="tab-pane active">
+		<ul class="thumbnails">
+			<li>
+				<div class="thumbnail">
+					<img src="#" style="width:128px;height:128px" />
+					<p class="text-center">文件共享</p>
+				</div>
+			</li>
+			<li>
+				<div class="thumbnail">
+					<img src="#" style="width:128px;height:128px" />
+					<p class="text-center">百度云盘</p>
+				</div>
+			</li>
+			<li>
+				<div class="thumbnail">
+					<img src="#" style="width:128px;height:128px" />
+					<p class="text-center">迅雷下载</p>
+				</div>
+			</li>
+			<li>
+				<div class="thumbnail">
+					<img src="#" style="width:128px;height:128px" />
+					<p class="text-center">动态域名</p>
+				</div>
+			</li>
+			<li>
+				<div class="thumbnail">
+					<img src="#" style="width:128px;height:128px" />
+					<p class="text-center">端口映射</p>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div id="avaliable">
+	</div>
+</div>
+<%+footer%>

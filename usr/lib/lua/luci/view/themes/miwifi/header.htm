@@ -1,0 +1,105 @@
+<%
+local sys  = require "luci.sys"
+local http = require "luci.http"
+local disp = require "luci.dispatcher"
+
+local hostname = sys.hostname()
+
+local request  = disp.context.path
+local request2 = disp.context.request
+
+local category = request[1]
+local cattree  = category and disp.node(category)
+
+local leaf = request2[#request2]
+
+local tree = disp.node()
+local node = disp.context.dispatched
+
+local categories = disp.node_childs(tree)
+%>
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>云狐路由器</title>
+  <!--[if lt IE 9]><script src="<%=media%>/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="<%=media%>/css/base.css">
+  <link rel="stylesheet" href="<%=resource%>/css/cbi.css">
+  <script src="<%=resource%>/xhr.js"></script>
+ </head>
+
+ <body>
+	 <div class="header">
+		<div class="container">
+			<div class="nav">
+				<a href="#" class="brand"><img src="<%=media%>/images/logo.png" /></a>
+				<ul class="navbar">
+					<%
+						childs = disp.node_childs(cattree)
+						if #childs > 0 then
+							for i, r in ipairs(childs) do
+								local nnode = cattree.nodes[r]
+								local href  = controller .. "/" .. category .. "/" .. r ..
+									(nnode.query and http.build_querystring(k.query) or "")
+								local grandchildren = disp.node_childs(nnode)
+								if #grandchildren > 0 then
+									if request[2] == r then
+										active = "active"
+									else
+										active = ""
+									end
+						%>
+								<li class="<%=active%>"><a href="<%=pcdata(href)%>"><%=pcdata(striptags(translate(nnode.title)))%></a></li> 
+						<%
+								end
+							end
+						end
+					%>
+				</ul>
+				<ul class="navbar-right">
+					<li><a href="http://www.yunhuwifi.com" target="_blank">访问官网</a></li>
+					<li><a href="http://bbs.yunhuwifi.com" target="_blank">云狐社区</a></li>
+					<li><a href="<%=disp.build_url("admin/logout")%>">退出</a></li>
+				</ul>
+			</div>
+			<div class="subnav">
+				<%-
+				local function submenu(prefix, node)
+					local childs = disp.node_childs(node)
+					if #childs > 0 then
+				%>
+				<ul class="navbar-sub">
+				<%-
+					for i, r in ipairs(childs) do
+						local nnode = node.nodes[r]
+						local href  = controller .. prefix .. r ..
+							(nnode.query and http.build_querystring(nnode.query) or "")
+							
+						if request[3] == r then
+							active = "active"
+						else
+							active = ""
+						end
+				%>
+				<li class="<%=active%>"><a href="<%=pcdata(href)%>"><%=pcdata(striptags(translate(nnode.title)))%></a></li>
+				<%-
+					end
+				%>
+			</ul>
+			<%-
+				end
+			end
+			%>
+			<%
+			if request[2] then
+				local subNode = cattree.nodes[request[2]]
+				submenu("/" .. category .. "/" .. request[2] .. "/", subNode)
+			end
+			%>
+			</div>
+		</div>
+	 </div>
+	 <div class="body">
+		<div class="container">
+		

@@ -1,0 +1,54 @@
+<%+header%>
+<%
+	local network = require "luci.model.yunhu.network"
+	local lan = network:get_lan()
+%>
+<form action="<%=luci.dispatcher.build_url("web/setting/lan/edit")%>" method="POST" class="form-horizontal">
+<fieldset>
+	<legend>DHCP 设置</legend>
+	<div class="control-group">
+		<label class="control-label">DHCP 服务</label>
+		<div class="controls">
+			<label class="checkbox"><input id="enable" name="enable" type="checkbox" <%if lan.enable then write("checked='checked'") end%> value="1" /> 开启</label>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">分类IP范围</label>
+		<div class="controls">
+			<p><label>192.168.10.<input type="text" id="start" name="start" class="input-mini" value="<%=lan.start%>" /></label></p>
+			<p><label>192.168.10.<input type="text" id="limit" name="limit" class="input-mini" value="<%=lan.limit%>" /></label></p>
+		</div>
+	</div>
+</fieldset>
+<fieldset>
+	<legend>内网IP 设置</legend>
+	<div class="control-group">
+		<label class="control-label">IP 地址</label>
+		<div class="controls">
+			<input type="text" id="ipaddr" name="ipaddr" class="input-large" value="<%=lan.ipaddr%>" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">子网掩码</label>
+		<div class="controls">
+			<input type="text" id="netmask" name="netmask" class="input-large" value="<%=lan.netmask%>" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">自定义DNS</label>
+		<div class="controls">
+			<input type="text" id="dns1" name="dns" class="input-large" value="<%if lan.dns ~= nil and #lan.dns > 0 then write(lan.dns[1]) end%>" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">备选DNS</label>
+		<div class="controls">
+			<input type="text" id="dns2" name="dns" class="input-large" value="<%if lan.dns ~= nil and #lan.dns > 1 then write(lan.dns[2]) end%>" />
+		</div>
+	</div>
+</fieldset>
+	<div class="form-actions">
+		<input type="submit" class="btn btn-primary" value="保存" />
+	</div>
+</form>
+<%+footer%>

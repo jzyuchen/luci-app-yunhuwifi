@@ -1,0 +1,112 @@
+body{
+	font-family: "microsoft yahei";
+	padding:0;
+	margin:0;
+	background-color:#222;
+	font-size:14px;
+}
+ul{
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+h2 > #content{
+	color:#999;
+	font-size:14px;
+	text-decoration:none;
+}
+h2 > #content{
+	text-decoration:none;
+}
+.header{
+	height:40px;
+	background-color:#222;
+}
+.header > .brand > img{
+	height:30px;
+	padding: 5px;
+}
+.navbar-right{
+	float:right;
+	font-size:12px;
+	margin-right: 15px;
+}
+.navbar-right > li {
+	float:left;
+	display:inline;
+	margin-left: 10px;
+	line-height:40px;
+}
+.navbar-right > li > a{
+	display:block;
+	color:#ddd;
+	text-decoration:none;
+}
+.body:before, .body:after{
+	content:"";
+	display:table;
+	clear:both;
+}
+.nav{
+	background-color:#222;
+	float:left;
+	width: 220px;
+}
+.navbar{
+	width:100%;
+	float:left;
+}
+.navbar > li{
+	border-bottom:solid 1px #333;
+}
+.navbar > li > a{
+	display:block;
+	color:#ddd;
+	padding: 15px;
+	background-color:#222;
+	text-decoration:none;
+	font-size:18px;
+}
+.navbar > li.active > a{
+	background-color:#f00;
+	color:#fff;
+}
+
+.navbar-sub{
+	display:none;
+}
+.navbar-sub > li{
+}
+.navbar-sub > li > a{
+	display:block;
+	background-color:#333;
+	text-decoration:none;
+	color:#ddd;
+	padding: 6px 0 6px 40px;
+	font-size:14px;
+}
+.navbar-sub > li.active > a{
+	color:#fff;
+}
+.content{
+	margin-left: 220px;
+	background-color:#fff;
+}
+.container{
+	padding: 0 15px;
+	overflow:hidden;
+}
+.page-title{
+	padding: 15px;
+	background-color:#f2f2f2;
+	border-bottom:solid 1px #ddd;
+	margin-bottom:10px;
+}
+
+.footer{
+	border-top:solid 1px #ddd;
+	text-align:center;
+	margin-top: 30px;
+	padding:10px 0;
+	font-size:12px;
+}

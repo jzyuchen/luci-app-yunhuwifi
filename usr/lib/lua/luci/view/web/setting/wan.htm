@@ -1,0 +1,110 @@
+<%+header%>
+<%
+	local network = require "luci.model.yunhu.network"
+	local wan = network:get_wan()
+%>
+<h2>
+<a id="content" name="content">外网设置</a>
+</h2>
+<form action="<%=luci.dispatcher.build_url("web/setting/wan/edit")%>" method="POST" class="form-horizontal">
+	<div class="control-group">
+		<label class="control-label">上网方式</label>
+		<div class="controls">
+			<select id="proto" name="proto">
+				<option value="pppoe" <%if wan.proto == "pppoe" then write("selected='selected'") end%>>宽带拨号(PPPoE)</option>
+				<option value="dhcp" <%if wan.proto == "dhcp" then write("selected='selected'") end%>>动态IP</option>
+				<option value="static" <%if wan.proto == "static" then write("selected='selected'") end%>>固定IP</option>
+			</select>
+		</div>
+	</div>
+	<div id="pppoe" class="section">
+		<div class="control-group">
+			<label class="control-label">宽带账号</label>
+			<div class="controls">
+				<input type="text" name="username" class="input-large" value="<%if wan.proto == "pppoe" then write(wan.username) end%>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">宽带密码</label>
+			<div class="controls">
+				<input type="password" name="password" class="input-large" value="<%if wan.proto == "pppoe" then write(wan.password) end%>" />
+				<a href="#" class="input-help-inline btn btn-small">显示密码</a>
+			</div>
+		</div>
+	</div>
+	<div id="dhcp" class="section">
+		<div class="control-group">
+			<div class="controls">
+				自动获取IP地址
+			</div>
+		</div>
+	</div>
+	<div id="static" class="section">
+		<div class="control-group">
+			<label class="control-label">IP 地址</label>
+			<div class="controls">
+				<input type="text" name="ipaddr" class="input-large" value="<%if wan.proto == "static" then write(wan.ipaddr) end%>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">网关</label>
+			<div class="controls">
+				<input type="text" name="gwaddr" class="input-large" value="<%if wan.proto == "static" then write(wan.gwaddr) end%>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">子网掩码</label>
+			<div class="controls">
+				<input type="text" name="netmask" class="input-large" value="<%if wan.proto == "static" then write(wan.netmask) else write("255.255.255.0") end%>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">自定义DNS</label>
+			<div class="controls">
+				<%
+					if wan.dns ~= nil then
+				%>
+					<input type="text" id="dns1" name="dns" class="input-large" value="<%if wan.proto == "static" then write(luci.util.split(wan.dns, " ")[1]) end%>" />
+				<%
+					else
+				%>
+					<input type="text" id="dns1" name="dns" class="input-large" value="" />
+				<%
+					end
+				%>
+				
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">备选DNS</label>
+			<div class="controls">
+				<%
+					if wan.dns ~= nil and luci.util.split(wan.dns, " ") > 1 then
+				%>
+					<input type="text" id="dns2" name="dns" class="input-large" value="<%if wan.proto == "static" then write(luci.util.split(wan.dns, " ")[2]) end%>" />
+				<%
+					else
+				%>
+					<input type="text" id="dns2" name="dns" class="input-large" value="" />
+				<%
+					end
+				%>
+			</div>
+		</div>
+		
+	</div>
+	<div class="form-actions">
+		<input type="submit" class="btn btn-primary" value="保存" />
+	</div>
+</form>
+<script type="text/javascript">
+	$(function(){
+		$(".section").hide();
+		$("#" + $("#proto").children('option:selected').val()).show();
+		$("#proto").change(function(){
+			$(".section").hide();
+			$("#" + $(this).children('option:selected').val()).show();
+		})
+	})
+</script>
+<%+footer%>

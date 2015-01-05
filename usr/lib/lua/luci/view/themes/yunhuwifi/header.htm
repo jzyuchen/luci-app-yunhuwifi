@@ -1,0 +1,195 @@
+<%#
+LuCI - Lua Configuration Interface
+Copyright 2008 Steven Barth <steven@midlink.org>
+Copyright 2008 Jo-Philipp Wich <xm@leipzig.freifunk.net>
+Copyright 2012 David Menting <david@nut-bolt.nl>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+-%>
+<%
+	local sys  = require "luci.sys"
+	local http = require "luci.http"
+	local disp = require "luci.dispatcher"
+
+	local hostname = sys.hostname()
+
+	local request  = disp.context.path
+	local request2 = disp.context.request
+
+	local category = request[1]
+	local cattree  = category and disp.node(category)
+
+	local leaf = request2[#request2]
+
+	local tree = disp.node()
+	local node = disp.context.dispatched
+
+	local categories = disp.node_childs(tree)
+
+	local c = tree
+	local i, r
+
+	-- tag all nodes leading to this page
+	for i, r in ipairs(request) do
+		if c.nodes and c.nodes[r] then
+			c = c.nodes[r]
+			c._menu_selected = true
+		end
+	end
+    
+    -- send as HTML5
+	http.prepare_content("text/html")
+
+	local function nodeurl(prefix, name, query)
+		local url = controller .. prefix .. name .. "/"
+		if query then
+			url = url .. http.build_querystring(query)
+		end
+		return pcdata(url)
+	end
+
+	local function subtree(prefix, node, level)
+		if not level then
+			level = 1
+		end
+
+		local childs = disp.node_childs(node)
+		if #childs > 0 then
+        
+            if level > 2 then
+%>
+
+	<ul class="tabs">
+		<%  
+            end
+
+			local selected_node
+			local selected_name
+			local i, v
+
+			for i, v in ipairs(childs) do
+				local nnode = node.nodes[v]
+				if nnode._menu_selected then
+					selected_node = nnode
+					selected_name = v
+				end
+                if level > 2 then
+		%>
+			<li class="tabmenu-item-<%=v%><%- if nnode._menu_selected or (node.leaf and v == leaf) then %> active<% end %>">
+			    <a href="<%=nodeurl(prefix, v, nnode.query)%>"><%=striptags(translate(nnode.title))%></a>
+			</li>
+		<%      end
+			end
+            
+            if level > 2 then
+		%>
+	</ul>
+<%          end
+
+			if selected_node then
+				subtree(prefix .. selected_name .. "/", selected_node, level + 1)
+			end
+		end
+	end
+-%>
+<%-
+local function submenu(prefix, node)
+	local childs = disp.node_childs(node)
+	if #childs > 0 then
+%>
+	<ul class="navbar-sub">
+<%-
+	for i, r in ipairs(childs) do
+		local nnode = node.nodes[r]
+		local href  = controller .. prefix .. r .. (nnode.query and http.build_querystring(nnode.query) or "")
+		if request[3] == r then
+			active = "active"
+		else
+			active = ""
+		end
+%>
+	<li class="<%=active%>">
+		<a href="<%=pcdata(href)%>"><%=pcdata(striptags(translate(nnode.title)))%></a>
+	</li>
+	<%-
+		end
+	%>
+</ul>
+<%-
+	end
+end
+%>
+<!DOCTYPE html>
+<html lang="<%=luci.i18n.context.lang%>">
+ <head>
+  <meta charset="utf-8">
+  <title>云狐路由器</title>
+  <!--[if lt IE 9]><script src="<%=media%>/html5.js"></script><![endif]-->
+  <link rel="stylesheet" href="<%=media%>/css/base.css">
+  <link rel="stylesheet" href="<%=media%>/css/yunhuwifi.css">
+  <link rel="stylesheet" href="<%=resource%>/css/cbi.css">
+  <% if node and node.css then %><link rel="stylesheet" href="<%=resource%>/<%=node.css%>">
+  <% end -%>
+  <% if css then %><style title="text/css">
+  <%-= css %>
+  </style>
+  <% end -%>
+  <script src="<%=resource%>/xhr.js"></script>
+  <script src="<%=resource%>/js/jquery-1.11.1.min.js"></script>
+ </head>
+
+ <body>
+ <div class="header">
+	<a href="#" class="brand"><img src="<%=media%>/images/logo.png" /></a>
+	<ul class="navbar-right">
+		<li><span class="hostname"><%=hostname%></span></li>
+		<li><a href="http://www.yunhuwifi.com" target="_blank">访问官网</a></li>
+		<li><a href="http://bbs.yunhuwifi.com" target="_blank">云狐社区</a></li>
+		<li><a href="<%=disp.build_url("admin/logout")%>">退出</a></li>
+	</ul>
+ </div>
+ <div class="body">
+	<div class="nav">
+		<ul class="navbar">
+			<%
+			childs = disp.node_childs(cattree)
+
+			if #childs > 0 then
+				for i, r in ipairs(childs) do
+					local nnode = cattree.nodes[r]
+					local href  = controller .. "/" .. category .. "/" .. r ..
+						(nnode.query and http.build_querystring(k.query) or "")
+					local grandchildren = disp.node_childs(nnode)
+					
+						if request[2] == r then
+							active = "active"
+						else
+							active = ""
+						end
+			%>
+					<li class="<%=active%>">
+						<a href="<%=pcdata(href)%>"><%=pcdata(striptags(translate(nnode.title)))%></a>
+						<%=submenu("/" .. category .. "/" .. r .. "/", nnode)%>
+					</li> 
+			<%
+					
+				end
+			end
+			%>
+		</ul>
+	</div>
+	<div class="content">
+		<div class="page-title">
+			<span><%
+				if cattree then
+					pcdata(striptags(translate(cattree.nodes[request[2]].title)))
+				end
+				%>
+			</span>
+		</div>
+		<div class="container">

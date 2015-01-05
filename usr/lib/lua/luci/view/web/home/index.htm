@@ -1,0 +1,77 @@
+<%+header%>
+<%
+	local device = require "luci.model.yunhu.device"
+%>
+<h2>
+<a class="pull-left" id="content" name="content">路由状态</a>
+<div class="pull-right">
+	<label class="checkbox"><input type="checkbox"> 禁止未知设备连接</label>
+</div>
+</h2>
+<div class="well">
+	<img src="#" class="icon-router" />
+	<dl class="router-info">
+		<dt>路由器型号：</dt>
+		<dd><%=luci.sys.sysinfo()%></dd>
+		<dt>固件版本：</dt>
+		<dd><%=pcdata(luci.version.distversion)%></dd>
+		<dt>运行时间：</dt>
+		<dd><%=luci.sys.uptime()%></dd>
+	</dl>
+</div>
+<div class="intros">
+	<div class="intro red">
+		<div class="inner">
+			<h3><%=device.getDeviceCount()%></h3>
+			<p>已连接设备</p>
+		</div>
+	</div>
+	<div class="intro red">
+		<div class="inner">
+		<h3 id="tx">1.3MB /s</h3>
+		<p>上传速度</p>
+		</div>
+	</div>
+	<div class="intro red">
+		<div class="inner">
+		<h3 id="rx">1.3MB /s</h3>
+		<p>下载速度</p>
+		</div>
+	</div>
+	<div class="intro red">
+		<div class="inner">
+		<h3>80%</h3>
+		<p>存储空间</p>
+		</div>
+	</div>
+</div>
+<div class="row-fluid">
+<script type="text/javascript">
+	$(function(){
+		loadflow();
+	})
+	
+	function loadflow(){
+		$.get("<%=luci.dispatcher.build_url("web/setting/flow")%>?iface=wan", function(result){
+			$("#rx").text(format_byte(result.rx_bytes));
+			$("#tx").text(format_byte(result.tx_bytes));
+			window.setTimeout(loadflow, 2000);
+		})
+	}
+	
+	function format_byte(i){
+		if (i > 1 * 1024 * 1024 * 1024){
+			return (i / 1024 / 1024 / 1024).toFixed(2) + " GB";
+		}
+		else if (i > 1 * 1024 * 1024){
+			return (i / 1024 / 1024).toFixed(2) + " MB";
+		}
+		else if (i> 1 * 1024){
+			return (i / 1024).toFixed(2) + " KB";
+		}
+		else{
+			return i + " Byte";
+		}
+	}
+</script>
+<%+footer%>
