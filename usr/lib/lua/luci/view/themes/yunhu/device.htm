@@ -1,0 +1,161 @@
+﻿<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>云狐路由 - YunhuWiFi</title>
+		<link href="../../../../../../../www/luci-static/yunhu/css/base.css" rel="stylesheet" type="text/css" />
+		<link href="../../../../../../../www/luci-static/yunhu/css/yunhu.css" rel="stylesheet" type="text/css" />
+		<link href="../../../../../../../www/luci-static/yunhu/css/device.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div class="nav">
+			<div class="logo">
+				<img src="../../../../../../../www/luci-static/yunhu/images/logo.png" />
+				<div class="top-user">
+				<h2 class="logo-brand">云狐路由</h2>
+				<p>
+					<a href="#">重启</a>
+					<span>|</span>
+					<a href="#">退出</a>
+				</p>
+				</div>
+			</div>
+			<ul class="nav-list">
+				<li><a href="index.htm">路由状态</a></li>
+				<li class="active"><a href="device.htm">设备管理</a></li>
+				<li><a href="app.htm">应用管理</a></li>
+				<li>
+					<a href="#">路由设置</a>
+					<ul class="nav-list-sub">
+						<li><a href="wifi.htm">无线设置</a></li>
+						<li><a href="wan.htm">外网设置</a></li>
+						<li><a href="lan.htm">内网设置</a></li>
+						<li><a href="upgrade.htm">固件升级</a></li>
+						<li><a href="reset.htm">出厂设置</a></li>
+						<li><a href="#">高级设置</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="content">
+			<div class="page-title">
+				<h2>设备管理</h2>
+			</div>
+			<div class="inner">
+				<table>
+					<tr>
+					</tr>
+					<tr>
+						<td>
+							<div class="media">
+								<div class="device-icon device-icon-xiaomi media-left"></div>
+								<div class="media-body">
+									<h4 class="media-heading">小米手机</4>
+									<p>MAC 地址: 00:30:10:12:12:44</p>
+								</div>
+							</div>
+						</td>
+						<td class="ip">192.168.1.100</td>
+						<td class="conntype">有线连接</td>
+						<td class="traffic"">
+							<p>325KB/s</p>
+							<p>5.5KB/s</p>
+						</td>
+						<td class="action">
+							<a href="#" class="switch switch-on"></a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="media">
+								<div class="device-icon device-icon-samsung media-left"></div>
+								<div class="media-body">
+									<h4 class="media-heading">三星手机</4>
+									<p>MAC 地址: 00:30:10:12:12:44</p>
+								</div>
+							</div>
+						</td>
+						<td class="ip">192.168.1.100</td>
+						<td class="conntype">有线连接</td>
+						<td class="traffic"">
+							<p>325KB/s</p>
+							<p>5.5KB/s</p>
+						</td>
+						<td class="action">
+							<a href="#" class="switch switch-on"></a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="media">
+								<div class="device-icon device-icon-huawei media-left"></div>
+								<div class="media-body">
+									<h4 class="media-heading">华为手机</4>
+									<p>MAC 地址: 00:30:10:12:12:44</p>
+								</div>
+							</div>
+						</td>
+						<td class="ip">192.168.1.100</td>
+						<td class="conntype">有线连接</td>
+						<td class="traffic"">
+							<p>325KB/s</p>
+							<p>5.5KB/s</p>
+						</td>
+						<td class="action">
+							<a href="#" class="switch switch-on"></a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="media">
+								<div class="device-icon device-icon-coolpad media-left"></div>
+								<div class="media-body">
+									<h4 class="media-heading">酷派手机</4>
+									<p>MAC 地址: 00:30:10:12:12:44</p>
+								</div>
+							</div>
+						</td>
+						<td class="ip">192.168.1.100</td>
+						<td class="conntype">有线连接</td>
+						<td class="traffic"">
+							<p>325KB/s</p>
+							<p>5.5KB/s</p>
+						</td>
+						<td class="action">
+							<a href="#" class="switch switch-on"></a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="media">
+								<div class="device-icon device-icon-xiaomi media-left"></div>
+								<div class="media-body">
+									<h4 class="media-heading">小米电视</4>
+									<p>MAC 地址: 00:30:10:12:12:44</p>
+								</div>
+							</div>
+						</td>
+						<td class="ip">192.168.1.100</td>
+						<td class="conntype">有线连接</td>
+						<td class="traffic"">
+							<p>325KB/s</p>
+							<p>5.5KB/s</p>
+						</td>
+						<td class="action">
+							<a href="#" class="switch switch-on"></a>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<script src="../../../../../../../www/luci-static/yunhu/js/jquery-1.8.3.js"></script>
+		<script src="../../../../../../../www/luci-static/yunhu/js/base.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$(".nav").height($(window).height());
+				$(window).resize(function(){
+					$(".nav").top(0);
+				})
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,79 @@
+﻿.device-icon{
+	width: 80px;
+	height: 80px;
+}
+.device-icon-acer{
+	background-image: url(../images/deviceicon/acer.png);
+}
+.device-icon-amazon{
+	background-image: url(../images/deviceicon/amazon.png);
+}
+.device-icon-apple{
+	background-image: url(../images/deviceicon/apple.png);
+}
+.device-icon-asus{
+	background-image: url(../images/deviceicon/asus.png);
+}
+.device-icon-aux{
+	background-image: url(../images/deviceicon/aux.png);
+}
+.device-icon-bbk{
+	background-image: url(../images/deviceicon/bbk.png);
+}
+.device-icon-blackberry{
+	background-image: url(../images/deviceicon/blackberry.png);
+}
+.device-icon-broadlink{
+	background-image: url(../images/deviceicon/broadlink.png);
+}
+.device-icon-coolpad{
+	background-image: url(../images/deviceicon/coolpad.png);
+}
+.device-icon-htc{
+	background-image: url(../images/deviceicon/htc.png);
+}
+.device-icon-huawei{
+	background-image: url(../images/deviceicon/huawei.png);
+}
+.device-icon-lenovo{
+	background-image: url(../images/deviceicon/lenovo.png);
+}
+.device-icon-lg{
+	background-image: url(../images/deviceicon/lg.png);
+}
+.device-icon-malata{
+	background-image: url(../images/deviceicon/malata.png);
+}
+.device-icon-moto{
+	background-image: url(../images/deviceicon/moto.png);
+}
+.device-icon-nokia{
+	background-image: url(../images/deviceicon/nokia.png);
+}
+.device-icon-oppo{
+	background-image: url(../images/deviceicon/oppo.png);
+}
+.device-icon-philips{
+	background-image: url(../images/deviceicon/philips.png);
+}
+.device-icon-samsung{
+	background-image: url(../images/deviceicon/samsung.png);
+}
+.device-icon-sharp{
+	background-image: url(../images/deviceicon/sharp.png);
+}
+.device-icon-sony{
+	background-image: url(../images/deviceicon/sony.png);
+}
+.device-icon-toshiba{
+	background-image: url(../images/deviceicon/toshiba.png);
+}
+.device-icon-xiaomi{
+	background-image: url(../images/deviceicon/xiaomi.png);
+}
+.device-icon-zte{
+	background-image: url(../images/deviceicon/zte.png);
+}
+.device-icon-unknown{
+	background-image: url(../images/deviceicon/unknown.png);
+}

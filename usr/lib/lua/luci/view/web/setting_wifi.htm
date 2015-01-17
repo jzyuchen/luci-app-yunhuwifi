@@ -1,0 +1,133 @@
+<%+header%>
+<form id="form_wifi" method="POST" action="<%=luci.dispatcher.build_url("api/wifi/edit")%>">
+	<div class="section">
+		<h4 class="section-title">无线 2.4G</h4>
+		<div class="control-group">
+			<label class="control-label">无线名称</label>
+			<div class="controls">
+				<input type="text" id="wifi1_ssid" name="wifi1_ssid" class="input-large" placeholder="无线名称" />
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox"><input id="wifi1_hidden" name="wifi1_hidden" type="checkbox" /> 隐藏无线名称</label>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">无线安全</label>
+			<div class="controls">
+				<select id="wifi1_encryption" name="wifi1_encryption" class="input-large">
+					<option value="psk2">强加密(WPA2个人版)</option>
+					<option value="mixed-psk">混合加密(WPA/WPA2个人版)</option>
+					<option value="none">无加密(允许所有人连接)</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">无线密码</label>
+			<div class="controls">
+				<input type="password" id="wifi1_password" name="wifi1_password" class="input-large" placeholder="无线密码" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">无线信道</label>
+			<div class="controls">
+				<select id="wifi1_channel" name="wifi1_channel" class="input-large">
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">频段带宽</label>
+			<div class="controls">
+				<select id="wifi1_channel" name="wifi1_bandwith" class="input-large">
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<h4 class="section-title">无线 5G</h4>
+		<div class="control-group">
+			<label class="control-label">无线名称</label>
+			<div class="controls">
+				<input type="text" id="wifi2_ssid" name="wifi2_ssid" class="input-large" placeholder="无线名称" />
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox"><input id="wifi2_hidden" name="wifi2_hidden" type="checkbox" /> 隐藏无线名称</label>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">无线安全</label>
+			<div class="controls">
+				<select id="wifi2_encryption" name="wifi2_encryption" class="input-large">
+					<option value="psk2">强加密(WPA2个人版)</option>
+					<option value="mixed-psk">混合加密(WPA/WPA2个人版)</option>
+					<option value="none">无加密(允许所有人连接)</option>
+					</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">无线密码</label>
+			<div class="controls">
+				<input type="password" id="wifi2_password" name="wifi2_password" class="input-large" placeholder="无线密码" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">无线信道</label>
+			<div class="controls">
+				<select id="wifi2_channel" name="wifi2_channel" class="input-large">
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">频段带宽</label>
+			<div class="controls">
+				<select id="wifi2_channel" name="wifi2_bandwith" class="input-large">
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="form-actions">
+		<input type="submit" class="btn-primary" value="保存" />
+	</div>
+</form>
+<%+footer%>
+<script type="text/javascript">
+	$(function(){
+		
+		getWifiList();
+	});
+	
+	function validateWifiForm(){
+		return true;
+	}
+	
+	function getWifiList(){
+		$.get("<%=luci.dispatcher.build_url("api/wifi/list")%>", function(data){
+			if (data.info && data.info.length > 0){
+				var wifi2g = data.info[0];
+				$("#wifi1_ssid").val(wifi2g.ssid);
+				$("#wifi1_password").val(wifi2g.password);
+				$("#wifi1_encryption").val(wifi2g.encryption);
+				$("#wifi1_channel").val(wifi2g.channelInfo.channel);
+				$("#wifi1_chandwith").val(wifi2g.channelInfo.chandwith);
+				if (wifi2g.hidden != 0){
+					$("#wifi1_hidden").attr("checked", "checked");
+				}
+			}
+			
+			if (data.info && data.info.length > 1){
+				var wifi5g = data.info[1];
+				$("#wifi2_ssid").val(wifi5g.ssid);
+				$("#wifi2_password").val(wifi5g.password);
+				$("#wifi2_encryption").val(wifi5g.encryption);
+				$("#wifi2_channel").val(wifi5g.channelInfo.channel);
+				$("#wifi2_chandwith").val(wifi2g.channelInfo.chandwith);
+				if (wifi5g.hidden != 0){
+					$("#wifi2_hidden").attr("checked", "checked");
+				}
+			}
+		});
+	}
+</script>

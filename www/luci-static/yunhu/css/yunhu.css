@@ -1,0 +1,261 @@
+﻿body{
+	margin:0;
+	padding:0;
+	font-family:"microsoft yahei";
+	min-width:960px;
+	font-size: 14px;
+}
+.wrapper:before, .wrapper:after{
+	content:"";
+	clear:both;
+	display:table;
+	line-height: 0;
+}
+.nav{
+	position:absolute;
+	width:340px;
+	height:500px;
+	background-color:#0a53a4;
+	float:left;
+}
+.nav-top{
+	padding: 20px 0 10px 10px;
+}
+.nav-top:before, .nav-top:after{
+	content:"";
+	clear:both;
+	display:table;
+	line-height: 0;
+}
+.nav-top .logo{
+	width: 60px;
+	height: 60px;
+	float:left;
+	margin-right: 20px;
+	background-image: url(../images/logo.png)
+}
+.nav-top h2{
+	color:#fff;
+	font-size:22px;
+	font-weight:normal;
+	padding: 10px 0;
+}
+.nav-top-action p, .nav-top-action p a{
+	color:#ddd;
+	text-decoration:none;
+}
+
+.nav .nav-list{
+}
+.nav .nav-list > li{
+	width:100%;
+}
+.nav-list > li > ul.nav-list-sub{
+	list-style-type:none;
+}
+ul.nav-list-sub > li > a{
+	font-size: 14px;
+	color:#ddd;
+	padding: 6px 0 6px 40px;
+	text-decoration:none;
+	display:block;
+}
+ul.nav-list-sub > li.active > a{
+	color:#fff;
+}
+ul.nav-list-sub > li > a:hover{
+	color:#fff;
+}
+.nav .nav-list > li > a{
+	display:block;
+	color:#fff;
+	text-decoration:none;
+	font-size:16px;
+	padding: 10px 0 10px 20px;
+}
+.nav .nav-list > li.active > a{
+	background-color:#1e78be;
+}
+.content{
+	margin-left: 350px;
+}
+.content .page-title{
+	padding: 20px 10px;
+	border-bottom: solid 1px #ddd;
+}
+.content .page-title h2{
+	font-size: 22px;
+	font-weight:normal;
+}
+.content .inner{
+	padding: 20px 10px;
+}
+.report{
+	margin-bottom: 30px;
+}
+.report:after{
+	content:"";
+	clear:both;
+	line-height: 0;
+	display:table;
+}
+.report > li{
+	width: 25%;
+	float:left;
+	text-align:center;
+}
+.circle{
+	width: 120px; 
+	height: 120px; 
+	-webkit-border-radius: 100px; 
+	background-color:#fff;
+	line-height: 120px;
+	font-size: 20px;
+	margin: 10px auto;
+}
+.circle-red{
+	border:solid 2px #a72525;
+}
+.circle-blue{
+	border:solid 2px #0a53a4;
+}
+.circle-green{
+	border:solid 2px #2f853e;
+}
+.circle-orange{
+	border:solid 2px #ff6600;
+}
+.status{
+	margin:0;
+	padding:0;
+	list-style-type:none;
+}
+.status > li{
+	padding: 20px 10px;
+	border-bottom: solid 1px #ddd;
+}
+.status > li > .title{
+	font-size:18px;
+	margin-right: 20px;
+	width: 180px;
+	display:inline-block;
+}
+em{
+	font-style:normal;
+	color:#999;
+	font-size:12px;
+}
+.btn-small{
+	padding: 10px 0;
+	width: 120px;
+	color:#fff;
+	display:inline-block;
+	text-decoration:none;
+	font-size:14px;
+	background-color:#0a53a4;
+	text-align:center;
+}
+.pull-right{
+	float:right;
+}
+.top-user{
+	float:left;
+}
+
+.media{
+	margin-bottom: 10px;
+	padding-bottom: 10px;
+}
+.media:before, .media:after{
+	content:"";
+	display:table;
+	clear:both;
+}
+.media > .media-left{
+	float:left;
+	margin-right: 20px;
+}
+.media > .media-body > .media-heading{
+}
+.media > .media-body p{
+	font-size:12px;
+	color:#999;
+	font-weight:normal;
+}
+.switch{
+	display:inline-block;
+	width: 72px;
+	height:32px;
+}
+.switch-on{
+	background-image:url(../images/bt_switch_on.png);
+}
+.switch-off{
+	background-image:url(../images/bt_switch_off.png);
+}
+table{
+	width: 100%;
+}
+td.conntype{
+	width: 200px;
+	text-align:center;
+}
+td.traffic{
+	width: 120px;
+}
+td.action{
+	width: 80px;
+	text-align:right;
+}
+input[type='text'], input[type='password'], select{
+	padding: 6px 0;
+	text-indent: 10px;
+	border:solid 1px #ddd;
+	font-family: "microsoft yahei";
+	font-size: 14px;
+}
+.input-large{
+	width: 300px;
+}
+.control-group{
+	margin-bottom: 10px;
+}
+.control-group:before, .control-group:after{
+	content:"";
+	display:table;
+	clear:both;
+}
+.control-group .control-label{
+	float:left;
+	width: 120px;
+	text-align:right;
+	font-size: 14px;
+	padding: 6px 0;
+}
+.control-group .controls{
+	margin-left: 130px;
+}
+.form-actions{
+	margin-left: 130px;
+	padding: 10px 0;
+	margin-bottom: 10px;
+}
+.btn-primary{
+	padding: 10px 0;
+	width: 160px;
+	color:#fff;
+	display:inline-block;
+	text-decoration:none;
+	font-size:14px;
+	background-color:#0a53a4;
+	text-align:center;
+	border:solid 1px #0a53a4;
+}
+.section-title{
+	font-family: normal;
+	border-bottom: solid 1px #ddd;
+	padding: 10px;
+	font-size: 16px;
+	color:#0a53a4;
+	margin: 0 0 20px 0;
+}

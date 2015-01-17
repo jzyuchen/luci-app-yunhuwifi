@@ -1,0 +1,53 @@
+<%
+local http = require "luci.http"
+local disp = require "luci.dispatcher"
+http.prepare_content("text/html")
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]><html class="ie6 oldie" lang="zh"><![endif]-->
+<!--[if IE 7]><html class="ie7 oldie" lang="zh"><![endif]-->
+<!--[if IE 8]><html class="ie8 oldie" lang="zh"><![endif]-->
+<!--[if gt IE 8]><!--> <html lang="<%=luci.i18n.context.lang%>"> <!--<![endif]-->
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="edge" />
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<title>云狐路由 - YunhuWiFi</title>
+		<link href="<%=media%>/css/base.css" rel="stylesheet" />
+		<link href="<%=media%>/css/yunhu.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="nav">
+			<div class="nav-top">
+				<div class="logo"></div>
+				<div class="nav-top-action">
+				<h2 class="logo-brand">云狐路由</h2>
+				<p>
+					<a href="<%=disp.build_url("web/system/reboot")%>">重启</a>
+					<span>|</span>
+					<a href="<%=disp.build_url("web/logout")%>">退出</a>
+				</p>
+				</div>
+			</div>
+			<ul class="nav-list">
+				<li class="active"><a href="<%=disp.build_url("web/home")%>">路由状态</a></li>
+				<li><a href="<%=disp.build_url("web/device")%>">设备管理</a></li>
+				<li><a href="<%=disp.build_url("web/app")%>">应用管理</a></li>
+				<li>
+					<a href="#">路由设置</a>
+					<ul class="nav-list-sub">
+						<li><a href="<%=disp.build_url("web/setting/wifi")%>">无线设置</a></li>
+						<li><a href="<%=disp.build_url("web/setting/wan")%>">外网设置</a></li>
+						<li><a href="<%=disp.build_url("web/setting/lan")%>">内网设置</a></li>
+						<li><a href="<%=disp.build_url("web/system/upgrade")%>">固件升级</a></li>
+						<li><a href="<%=disp.build_url("web/system/reset")%>">出厂设置</a></li>
+						<li><a href="<%=disp.build_url("web/setting/advance")%>">高级设置</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="content">
+			<div class="page-title">
+				<h2>路由状态</h2>
+			</div>
+			<div class="inner">
