@@ -53,6 +53,7 @@ function setAllWifiInfo()
     -- 2.4g
 	local wifi2g = {
 		ssid = LuciHttp.formvalue("wifi1_ssid"),
+		hidden = LuciHttp.formvalue("wifi1_hidden"),
 		encryption = LuciHttp.formvalue("wifi1_encryption"),
 		password = LuciHttp.formvalue("wifi1_password"),
 		channel = LuciHttp.formvalue("wifi1_channel"),
@@ -62,6 +63,7 @@ function setAllWifiInfo()
 	-- 5g
 	local wifi5g = {
 		ssid = LuciHttp.formvalue("wifi2_ssid"),
+		hidden = LuciHttp.formvalue("wifi2_hidden"),
 		encryption = LuciHttp.formvalue("wifi2_encryption"),
 		password = LuciHttp.formvalue("wifi2_password"),
 		channel = LuciHttp.formvalue("wifi2_channel"),
@@ -69,28 +71,31 @@ function setAllWifiInfo()
 	}
 
 	local wifiUtil = require("yunhuwifi.WifiUtil")
-	local success2g = wifiUtil.setWifiBasicInfo(1, wifi2g.ssid, wifi2g.encryption, wifi2g.password, wifi2g.channel, "", 0, 1, wifi2g.bandwith)
-	local success5g = wifiUtil.setWifiBasicInfo(2, wifi5g.ssid, wifi5g.encryption, wifi5g.password, wifi5g.channel, "", 0, 1, wifi5g.bandwith)
+	local success2g = wifiUtil.setWifiBasicInfo(1, wifi2g.ssid, wifi2g.password, wifi2g.encryption, wifi2g.channel, "", wifi2g.hidden, 1, wifi2g.bandwith)
+	local success5g = wifiUtil.setWifiBasicInfo(2, wifi5g.ssid, wifi5g.password, wifi5g.encryption, wifi5g.channel, "", wifi5g.hidden, 1, wifi5g.bandwith)
 	
 	local result = {}
-	result["code"] = code
+	if success2g and success5g then
+		result["code"] = 0
+	else
+		result["code"] = 1001
+	end
 	LuciHttp.prepare_content("application/json")
     LuciHttp.write_json(result)
 end
 
 function setRegion()
-	local country = LuciHttp.formvalue("country")
+	local country = LuciHttp.formvalue("countryCode")
 	
 	local wifiUtil = require("yunhuwifi.WifiUtil")
 	local success = wifiUtil.setWifiRegion(country)
 	
 	local result = {}
-	if (success){
+	if success then
 		result['code'] = 0
-	}
-	else{
+	else
 		result['code'] = 1510
-	}
+	end
 	LuciHttp.prepare_content("application/json")
     LuciHttp.write_json(result)
 end

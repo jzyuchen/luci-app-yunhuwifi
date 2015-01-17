@@ -235,6 +235,10 @@ input[type='text'], input[type='password'], select{
 .control-group .controls{
 	margin-left: 130px;
 }
+.control-group .controls .checkbox{
+	margin-top: 6px;
+	display:inline-block;
+}
 .form-actions{
 	margin-left: 130px;
 	padding: 10px 0;

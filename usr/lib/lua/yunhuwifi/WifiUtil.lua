@@ -177,7 +177,7 @@ function getAllWifiInfo()
 end
 
 function checkWifiPasswd(passwd,encryption)
-    if encryption ~= nil or (encryption and encryption ~= "none" and passwd ~= nil and passwd ~= "") then
+    if CommonUtil.isNilOrEmpty(encryption) or (encryption and encryption ~= "none" and CommonUtil.isNilOrEmpty(passwd)) then
         return 1502
     end
     if encryption == "psk" or encryption == "psk2" then
@@ -204,7 +204,7 @@ function setWifiBasicInfo(wifiIndex, ssid, password, encryption, channel, txpwr,
         return false
     end
     if wifiDev then
-        if channel ~= nil and chanel ~= "" then
+        if not CommonUtil.isNilOrEmpty(channel) then
             wifiDev:set("channel",channel)
             if channel == "0" then
                 wifiDev:set("autoch","2")
@@ -212,10 +212,10 @@ function setWifiBasicInfo(wifiIndex, ssid, password, encryption, channel, txpwr,
                 wifiDev:set("autoch","0")
             end
         end
-        if bandwidth ~= nil and bandwidth ~= "" then
+        if not CommonUtil.isNilOrEmpty(bandwidth) then
             wifiDev:set("bw",bandwidth)
         end
-        if txpwr ~= nil and txpwr ~= "" then
+        if not CommonUtil.isNilOrEmpty(txpwr) then
             wifiDev:set("txpwr",txpwr);
         end
         if on == 1 then
@@ -225,9 +225,10 @@ function setWifiBasicInfo(wifiIndex, ssid, password, encryption, channel, txpwr,
         end
     end
     wifiNet:set("disabled", nil)
-    if ssid ~= nil and ssid ~= "" then
+    if not CommonUtil.isNilOrEmpty(ssid) then
         wifiNet:set("ssid",ssid)
     end
+
     local code = checkWifiPasswd(password,encryption)
     if code == 0 then
         wifiNet:set("encryption",encryption)
@@ -257,17 +258,17 @@ function setWifiRegion(country)
         return false
     end
 	for _, k in ipairs(CommonUtil.COUNTRY_CODE) do
-		if (k.c == country and k.p == true) then
+		if (k['c'] == country and k['p']) then
 			local network = LuciNetwork.init()
 			local wifiDev1 = network:get_wifidev(LuciUtil.split(_wifiNameForIndex(1),".")[1])
 			local wifiDev2 = network:get_wifidev(LuciUtil.split(_wifiNameForIndex(2),".")[1])
 			if wifiDev1 then
-				wifiDev1:set("country", k.c)
+				wifiDev1:set("country", k['c'])
 				wifiDev1:set("region", CommonUtil.REGION[k.c].region)
 				wifiDev1:set("aregion", CommonUtil.REGION[k.c].regionABand)
 			end
 			if wifiDev2 then
-				wifiDev2:set("country", k[c])
+				wifiDev2:set("country", k['c'])
 				wifiDev2:set("region", CommonUtil.REGION[k.c].region)
 				wifiDev2:set("aregion", CommonUtil.REGION[k.c].regionABand)
 			end
@@ -276,7 +277,7 @@ function setWifiRegion(country)
 			return true
 		end
 	end
-    return false
+    return true
 end
 
 function getWifiRegion()
@@ -285,7 +286,7 @@ function getWifiRegion()
     local wifiDev2 = network:get_wifidev(LuciUtil.split(_wifiNameForIndex(2),".")[1])
 	
 	local list = {}
-	if (wifiDev1)
+	if wifiDev1 then
 		list[#list+1] = {
 			['country'] = wifiDev1:get("country"),
 			['region'] = wifiDev1:get("region"),
@@ -293,13 +294,58 @@ function getWifiRegion()
 		}
 	end
 	
-	if (wifiDev2)
+	if wifiDev2 then
 		list[#list+1] = {
-			['country'] = wifiDev1:get("country"),
-			['region'] = wifiDev1:get("region"),
-			["aregion"] = wifiDev1:get("aregion")
+			['country'] = wifiDev2:get("country"),
+			['region'] = wifiDev2:get("region"),
+			["aregion"] = wifiDev2:get("aregion")
 		}
 	end
 	
 	return list
+end
+
+function getWifiRegionList()
+	local list = {}
+	for _, k in ipairs(CommonUtil.COUNTRY_CODE) do
+		if k['p'] then
+			list[#list+1] = {
+				['code'] = k['c'],
+				['name'] = k['n']
+			}
+		end
+	end
+	return list
+end
+
+function getDefaultWifiChannels(wifiIndex)
+    local index = tonumber(wifiIndex) == 2 and 2 or 1
+	
+	local network = LuciNetwork.init()
+    local wifiDev = network:get_wifidev(LuciUtil.split(_wifiNameForIndex(index),".")[1])
+
+    local ccode = wifiDev:get("country")
+    local channels = CHANNELS[ccode]
+    local result = {}
+    if channels then
+        channels = channels[index]
+        if channels then
+            channels = LuciUtil.split(channels, " ")
+            for _, channel in ipairs(channels) do
+                local item = {["c"] = channel}
+                if tonumber(channel) <= 14 then
+                    item["b"] = BANDWIDTH[2]
+                else
+                    if tonumber(channel) == 165 then
+                        item["b"] = BANDWIDTH[1]
+                    else
+                        item["b"] = BANDWIDTH[3]
+                    end
+                end
+                table.insert(result, item)
+            end
+            return result
+        end
+    end
+    return {}
 end

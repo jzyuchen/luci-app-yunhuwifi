@@ -17,8 +17,8 @@ function index()
 end
 
 local LuciHttp = require("luci.http")
-local DeviceUtil = require("luci.model.yunhu.deviceutil")
-local StringUtil = require("luci.model.yunhu.stringutil")
+--local DeviceUtil = require("yunhuwifi.DeviceUtil")
+--local CommonUtil = require("yunhuwifi.CommonUtil")
 
 function getDeviceList()
 	LuciHttp.write_json(DeviceUtil.getConnectedList())
@@ -28,7 +28,7 @@ function setDeviceName()
 	local mac = LuciHttp.formvalue("mac")
 	local name = LuciHttp.formvalue("name")
 	local result = {}
-	if not StringUtil.isNil(mac) and StringUtil.isMAC(mac) and not StringUtil.isNil(name) then
+	if not CommonUtil.isNilOrEmpty(mac) and isNilOrEmpty.isMac(mac) and not isNilOrEmpty.isNilOrEmpty(name) then
 		result['code'] = 0
 		DeviceUtil.setDeviceName(mac,name)
 	else
@@ -46,7 +46,7 @@ function setDeviceToBlackList()
 	local mac = LuciHttp.formvalue("mac")
 	
 	local result = {}
-	if not StringUtil.isNil(mac) then
+	if not CommonUtil.isNilOrEmpty(mac) then
 		DeviceUtil.setDeviceToBlackList(mac)
 		result['code'] = 0
 	else
@@ -59,7 +59,7 @@ end
 function removeDeviceFromBlackList()
 	local mac = LuciHttp.formvalue("mac")
 	local result = {}
-	if not StringUtil.isNil(mac) then
+	if not CommonUtil.isNilOrEmpty(mac) then
 		DeviceUtil.removeDeviceFromBlackList(mac)
 		result['code'] = 0
 	else
