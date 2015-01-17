@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<title>云狐路由器</title>
+	<link href="mobile.css" rel="stylesheet">
+</head>
+<body>
+<div class="header">
+	<h1 class="text-center">欢迎使用云狐路由器</h1>
+</div>
+<div class="container">
+	<div id="netdetect" class="section">
+		<p class="text-center">
+			<img src="loading.gif" />
+		</p>
+		<p class="text-center">正在自动检测您的上网类型</p>
+	</div>
+	<div id="dhcp" class="section">
+		<p class="text-center">自动检测到您的上网方式为:DHCP</p>
+		<button type="submit" class="btn-next">下一步</button>
+	</div>
+	<div id="pppoe" class="section">
+		<p class="text-center">请输入运营商提供的宽带账号信息</p>
+		<form action="api/network/set_wan" method="post">
+			<p>
+				<input type="text" class="text-block" placeholder="上网账号" />
+			</p>
+			<p>
+				<input type="password" class="text-block" placeholder="上网密码" />
+			</p>
+			<p>
+				<button type="submit" class="btn-next">下一步</button>
+			</p>
+		</form>
+	</div>
+	<div id="static" class="section">
+		<p class="text-center">请设置上网的IP地址信息</p>
+		<form action="api/network/set_wan" method="post">
+			<p>
+				<input type="text" class="text-block" placeholder="IP地址" />
+			</p>
+			<p>
+				<input type="text" class="text-block" placeholder="子网掩码" />
+			</p>
+			<p>
+				<input type="text" class="text-block" placeholder="网关" />
+			</p>
+			<p>
+				<button type="submit" class="btn-next">下一步</button>
+			</p>
+		</form>
+	</div>
+	<div id="wifi" class="section">
+		<p class="text-center">无线网络设置</p>
+		<form action="api/wifi/set_wifi" method="post">
+			<p>无线网络 2.4G</p>
+			<p>
+				<input type="text" class="text-block" placeholder="无线名称" />
+			</p>
+			<p>
+				<input type="password" class="text-block" placeholder="无线密码" />
+			</p>
+			<hr />
+			<p>无线网络 5G</p>
+			<p>
+				<input type="text" class="text-block" placeholder="无线名称" />
+			</p>
+			<p>
+				<input type="password" class="text-block" placeholder="无线密码" />
+			</p>
+			<p>
+				<button type="submit" class="btn-next">下一步</button>
+			</p>
+		</form>
+	</div>
+	<div id="admin" class="section">
+		<p class="text-center">管理密码设置</p>
+		<form action="api/system/set_password" method="post">
+			<p>
+				<input type="password" class="text-block" placeholder="管理密码" />
+			</p>
+			<p>
+				<button type="submit" class="btn-next">下一步</button>
+			</p>
+		</form>
+	</div>
+	<div id="admin" class="section">
+		<p class="text-center">恭喜您，设置完成</p>
+		<p class="text-center">
+			<img src="succ.png" />
+		</p>
+		<p class="text-center">扫描二维码，下载手机客户端</p>
+		<p class="text-center">
+		<img src="#" style="width:300px;height:300px" />
+		</p>
+	</div>
+</div>
+</body>
+</html>
