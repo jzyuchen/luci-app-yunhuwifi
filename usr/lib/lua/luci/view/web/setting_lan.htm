@@ -1,0 +1,56 @@
+<%+header%>
+<%
+	local lanUtil = require("yunhuwifi.LanUtil")
+	local lanInfo = lanUtil.getLanWanInfo("lan")
+	local dhcpService = lanUtil.getLanDHCPService()
+%>
+<form id="dhcpForm" method="POST" action="<%=luci.dispatcher.build_url("api/lan/set_dhcp")%>">
+	<div class="control-group">
+		<label class="control-label">DHCP 服务</label>
+		<div class="controls">
+			<label class="checkbox"><input type="checkbox" id="enable" name="enable" value="1" /></label>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">开始IP</label>
+		<div class="controls">
+			<input type="text" id="start" name="start" class="input-large" value="<%=dhcpService['start']%>" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">结束IP</label>
+		<div class="controls">
+			<input type="text" id="end" name="end" class="input-large" value="<%=(dhcpService['start'] + dhcpService['start'])%>" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">租约(分)</label>
+		<div class="controls">
+			<input type="text" id="leasetime" name="leasetime" class="input-large" value="<%=(dhcpService['leasetimeNum'] * 60)%>" />
+		</div>
+	</div>
+	<div class="form-actions">
+		<input type="submit" class="btn-primary" value="保存" />
+	</div>
+</form>
+<div class="page-title">
+	<h2>局域网IP地址</h2>
+</div>
+<form id="dhcpForm" method="POST" action="<%=luci.dispatcher.build_url("api/lan/set_lan")%>">
+	<div class="control-group">
+		<label class="control-label">局域网IP</label>
+		<div class="controls">
+			<input type="text" id="ip" name="ip" class="input-large" value="<%=lanInfo['ipv4'][1]['ip']%>" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">MAC地址</label>
+		<div class="controls">
+			<input type="text" id="mask" name="mask" class="input-large" value="<%=lanInfo['ipv4'][1]['mask']%>" />
+		</div>
+	</div>
+	<div class="form-actions">
+		<input type="submit" class="btn-primary" value="保存" />
+	</div>
+</form>
+<%+footer%>

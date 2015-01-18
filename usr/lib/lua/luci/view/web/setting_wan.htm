@@ -1,0 +1,96 @@
+<%+header%>
+<%
+	local wifiUtil = require("yunhuwifi.WifiUtil")
+	local allWifiInfo = wifiUtil:getAllWifiInfo()
+%>
+<form id="form_wifi" method="POST" action="<%=luci.dispatcher.build_url("api/wifi/edit")%>">
+	<%for i, wifiInfo in ipairs(allWifiInfo) do%>
+		<div class="control-group">
+			<label class="control-label"><%if i == 1 then%>无线 2.4G<%else%>无线 5G<%end%></label>
+			<div class="controls">
+				<label class="checkbox"><input id="wifi<%=i%>_enable" name="wifi<%=i%>_hidden" type="checkbox" value="1" /> 启用</label>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">无线名称</label>
+			<div class="controls">
+				<input type="text" id="wifi<%=i%>_ssid" name="wifi<%=i%>_ssid" class="input-large" placeholder="无线名称" value="<%=wifiInfo['ssid']%>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox"><input id="wifi<%=i%>_hidden" name="wifi<%=i%>_hidden" type="checkbox" /> 隐藏无线名称</label>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">无线安全</label>
+			<div class="controls">
+				<select id="wifi<%=i%>_encryption" name="wifi<%=i%>_encryption" class="input-large">
+					<option value="psk2"<%if(wifiInfo["encryption"] == "psk2") then%> selected="selected"<%end%>><%:强加密(WPA2个人版)%></option>
+					<option value="mixed-psk"<%if(wifiInfo["encryption"] == "mixed-psk") then%> selected="selected"<%end%>><%:混合加密(WPA/WPA2个人版)%></option>
+					<option value="none"<%if(wifiInfo["encryption"] == "none") then%> selected="selected"<%end%>><%:无加密(允许所有人连接)%></option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">无线密码</label>
+			<div class="controls">
+				<input type="password" id="wifi<%=i%>_password" name="wifi<%=i%>_password" class="input-large" placeholder="无线密码" value="<%=wifiInfo['password']%>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">无线信道</label>
+			<div class="controls">
+				<select id="wifi<%=i%>_channel" name="wifi<%=i%>_channel" class="input-large">
+					<%for k, c in ipairs(wifiUtil.getDefaultWifiChannels(i)) do%>
+						<option value="<%=c["c"]%>" <%if(tonumber(wifiInfo["channel"])==tonumber(c["c"])) then%>selected="selected"<%end%>><%if(c["c"]=="0") then%><%:自动%><%if wifiInfo["channelInfo"]["channel"] ~= "0" then%>(<%=wifiInfo["channelInfo"]["channel"]%>)<%end%><%else%><%=c["c"]%><%end%></option>
+					<%end%>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">频段带宽</label>
+			<div class="controls">
+				<%if(wifiInfo["channel"] == "0") then%>
+				<select name="wifi<%=i%>_bandwidth" class="input-large" id="wifi<%=i%>_bandwidth">
+					<option value="0"><%:自动%></option>
+				</select>
+				<%else%>
+				<select name="wifi<%=i%>_bandwidth" class="input-large" id="wifi<%=i%>_bandwidth">
+					<option value="0" <%if("0" == wifiInfo["bandwidth"]) then%>selected="selected"<%end%>><%:自动%></option>
+					<%for k2, v2 in pairs(wifiInfo["channelInfo"]["bandList"]) do%>
+						<option value="<%=v2%>" <%if(v2 == wifiInfo["bandwidth"]) then%>selected="selected"<%end%>><%=v2%>M</option>
+					<%end%>
+				</select>
+				<%end%>
+			</div>
+		</div>
+	<%end%>
+	<div class="form-actions">
+		<input type="submit" class="btn-primary" value="保存" />
+	</div>
+</form>
+<form id="form_wifi" method="POST" action="<%=luci.dispatcher.build_url("api/wifi/set_region")%>">
+	<div class="control-group">
+		<label class="control-label">无线网络所在区域</label>
+		<div class="controls">
+			<select id="countryCode" name="countryCode" class="input-large">
+				<%
+					for _, code in ipairs(wifiUtil:getWifiRegionList()) do
+				%>
+					<option value="<%=code['code']%>"><%=code['name']%></option>
+				<%
+					end
+				%>
+			</select>
+		</div>
+	</div>
+	<div class="form-actions">
+		<input type="submit" class="btn-primary" value="保存" />
+	</div>
+</form>
+<%+footer%>
+<script type="text/javascript">
+	$(function(){
+	});
+</script>

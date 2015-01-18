@@ -12,4 +12,6 @@ function index()
 
 	-- wifi settings
 	page = entry({"web", "setting", "wifi"}, template("web/setting_wifi", nil))
+	page = entry({"web", "setting", "lan"}, template("web/setting_lan", nil))
+	page = entry({"web", "setting", "wan"}, template("web/setting_wan", nil))
 end
