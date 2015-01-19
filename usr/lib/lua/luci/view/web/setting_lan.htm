@@ -8,19 +8,19 @@
 	<div class="control-group">
 		<label class="control-label">DHCP 服务</label>
 		<div class="controls">
-			<label class="checkbox"><input type="checkbox" id="enable" name="enable" value="1" /></label>
+			<label class="checkbox"><input type="checkbox" id="enable" name="enable" value="1" <%if dhcpService['ignore'] == '0' then%> checked <%end%> /></label>
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label">开始IP</label>
 		<div class="controls">
-			<input type="text" id="start" name="start" class="input-large" value="<%=dhcpService['start']%>" />
+			<span><%=dhcpService['lanIp'][1]['ip']%></span><input type="text" id="start" name="start" class="input-large" value="<%=dhcpService['start']%>" />
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label">结束IP</label>
 		<div class="controls">
-			<input type="text" id="end" name="end" class="input-large" value="<%=(dhcpService['start'] + dhcpService['start'])%>" />
+			<span><%=dhcpService['lanIp'][1]['ip']%></span><input type="text" id="end" name="end" class="input-large" value="<%=(dhcpService['start'] + dhcpService['start'])%>" />
 		</div>
 	</div>
 	<div class="control-group">

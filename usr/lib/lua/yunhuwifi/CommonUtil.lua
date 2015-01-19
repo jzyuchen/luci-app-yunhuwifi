@@ -37,6 +37,12 @@ LANGUAGE = {
     ["US"] = "en"
 }
 
+ERROR_Message = {
+	['0'] = "",
+	['1000'] = "", -- 
+	['9999'] = ""
+}
+
 function isNilOrEmpty(str)
 	return (str == nil or str == "")
 end

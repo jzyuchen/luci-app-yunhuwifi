@@ -1,19 +1,24 @@
 <%+header%>
+<%
+	local deviceUtil = require("yunhuwifi.DeviceUtil")
+	local deviceList = deviceUtil.getDeviceList()
+%>
 <table>
 	<tr>
 	</tr>
+	<%for _, device in ipairs(deviceList) do%>
 	<tr>
 		<td>
 			<div class="media">
-				<div class="device-icon device-icon-xiaomi media-left"></div>
+				<div class="device-icon device-icon-<%=device['icon']%> media-left"></div>
 				<div class="media-body">
-					<h4 class="media-heading">小米手机</4>
-					<p>MAC 地址: 00:30:10:12:12:44</p>
+					<h4 class="media-heading"><%=device['name']%></4>
+					<p>MAC 地址: <%=devie['mac']%></p>
 				</div>
 			</div>
 		</td>
-		<td class="ip">192.168.1.100</td>
-		<td class="conntype">有线连接</td>
+		<td class="ip"><%=devie['ip']%></td>
+		<td class="conntype"><%=devie['type']%></td>
 		<td class="traffic"">
 			<p>325KB/s</p>
 			<p>5.5KB/s</p>
@@ -22,85 +27,6 @@
 			<a href="#" class="switch switch-on"></a>
 		</td>
 	</tr>
-	<tr>
-		<td>
-			<div class="media">
-				<div class="device-icon device-icon-samsung media-left"></div>
-				<div class="media-body">
-					<h4 class="media-heading">三星手机</4>
-					<p>MAC 地址: 00:30:10:12:12:44</p>
-				</div>
-			</div>
-		</td>
-		<td class="ip">192.168.1.100</td>
-		<td class="conntype">有线连接</td>
-		<td class="traffic"">
-			<p>325KB/s</p>
-			<p>5.5KB/s</p>
-		</td>
-		<td class="action">
-			<a href="#" class="switch switch-on"></a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="media">
-				<div class="device-icon device-icon-huawei media-left"></div>
-				<div class="media-body">
-					<h4 class="media-heading">华为手机</4>
-					<p>MAC 地址: 00:30:10:12:12:44</p>
-				</div>
-			</div>
-		</td>
-		<td class="ip">192.168.1.100</td>
-		<td class="conntype">有线连接</td>
-		<td class="traffic"">
-			<p>325KB/s</p>
-			<p>5.5KB/s</p>
-		</td>
-		<td class="action">
-			<a href="#" class="switch switch-on"></a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="media">
-				<div class="device-icon device-icon-coolpad media-left"></div>
-				<div class="media-body">
-					<h4 class="media-heading">酷派手机</4>
-					<p>MAC 地址: 00:30:10:12:12:44</p>
-				</div>
-			</div>
-		</td>
-		<td class="ip">192.168.1.100</td>
-		<td class="conntype">有线连接</td>
-		<td class="traffic"">
-			<p>325KB/s</p>
-			<p>5.5KB/s</p>
-		</td>
-		<td class="action">
-			<a href="#" class="switch switch-on"></a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<div class="media">
-				<div class="device-icon device-icon-xiaomi media-left"></div>
-				<div class="media-body">
-					<h4 class="media-heading">小米电视</4>
-					<p>MAC 地址: 00:30:10:12:12:44</p>
-				</div>
-			</div>
-		</td>
-		<td class="ip">192.168.1.100</td>
-		<td class="conntype">有线连接</td>
-		<td class="traffic"">
-			<p>325KB/s</p>
-			<p>5.5KB/s</p>
-		</td>
-		<td class="action">
-			<a href="#" class="switch switch-on"></a>
-		</td>
-	</tr>
+	<%end%>
 </table>
 <%+footer%>
