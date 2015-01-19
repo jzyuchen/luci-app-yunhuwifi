@@ -17,11 +17,15 @@ function index()
 end
 
 local LuciHttp = require("luci.http")
---local DeviceUtil = require("yunhuwifi.DeviceUtil")
---local CommonUtil = require("yunhuwifi.CommonUtil")
+local DeviceUtil = require("yunhuwifi.DeviceUtil")
+local CommonUtil = require("yunhuwifi.CommonUtil")
 
 function getDeviceList()
-	LuciHttp.write_json(DeviceUtil.getConnectedList())
+	local result = {}
+	result['code'] = 0
+	result['info'] = DeviceUtil.getDeviceList()
+	LuciHttp.prepare_content("application/json")
+	LuciHttp.write_json(result)
 end
 
 function setDeviceName()

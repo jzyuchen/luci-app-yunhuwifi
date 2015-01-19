@@ -46,3 +46,7 @@ ERROR_Message = {
 function isNilOrEmpty(str)
 	return (str == nil or str == "")
 end
+
+function formatMac(mac)
+	return mac:upper()
+end

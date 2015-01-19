@@ -10,7 +10,7 @@ function getDHCPList()
     local LuciUci = require("luci.model.uci")
     local uci =  LuciUci.cursor()
     local result = {}
-    local leasefile = XQConfigs.DHCP_LEASE_FILEPATH
+    local leasefile = "/temp/dhcp.leases"
     uci:foreach("dhcp", "dnsmasq",
     function(s)
         if s.leasefile and NixioFs.access(s.leasefile) then
@@ -28,7 +28,7 @@ function getDHCPList()
                 end
                 if ts and mac and ip and name then
                     result[#result+1] = {
-                        mac  = XQFunction.macFormat(mac),
+                        mac  = mac,
                         ip   = ip,
                         name = name
                     }
@@ -46,18 +46,17 @@ function getDeviceList()
 	local dhcpList = getDHCPList()
 	local list = {}
 	for _, item in ipairs(dhcpList) do
-		list[#list+1] = {
-			name = "name",
-			ip = "ip",
-			mac = "mac",
-			type = "line|wifi",
-			icon = "xiaomi.png",
-			factory = "xiaomi inc",
-			tx = "128kb",
-			rx = "128kb",
-			uptime = "123123",
-			online = true
+		local deviceInfo = {
+			['mac'] = CommonUtil.formatMac(item['mac']),
+			['ip'] = item['ip'],
+			['name'] = "",
+			['type'] = "",
+			['icon'] = "unknown",
+			['factory'] = '',
+			['uptime'] = '',
+			['online'] = ''
 		}
+		list[#list+1] = deviceInfo
 	end
 	return list
 end
@@ -76,9 +75,6 @@ function getDeviceInfo(mac)
 	}
 	
 	return deviceInfo
-end
-
-function setDeviceInfo(name, mac)
 end
 
 function getDeviceIcon(mac)

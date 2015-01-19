@@ -5,6 +5,12 @@
 	min-width:960px;
 	font-size: 14px;
 }
+h1, h2, h3, h4, h5, h6, p {
+	padding: 0 0 10px 0;
+}
+p{
+	color:#999;
+}
 .wrapper:before, .wrapper:after{
 	content:"";
 	clear:both;
@@ -176,6 +182,8 @@ em{
 	margin-right: 20px;
 }
 .media > .media-body > .media-heading{
+	padding: 10px 0;
+	font-weight:normal;
 }
 .media > .media-body p{
 	font-size:12px;
@@ -195,6 +203,15 @@ em{
 }
 table{
 	width: 100%;
+	max-width: 100%;
+	border-spacing: 0;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+}
+table th, table td{
+	vertical-align:middle;
+	border-bottom:solid 1px #ddd;
+	padding: 8px;
 }
 td.conntype{
 	width: 200px;

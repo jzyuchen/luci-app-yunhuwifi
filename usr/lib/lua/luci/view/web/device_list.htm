@@ -1,5 +1,6 @@
 <%+header%>
 <%
+	local commonUtil = require("yunhuwifi.CommonUtil")
 	local deviceUtil = require("yunhuwifi.DeviceUtil")
 	local deviceList = deviceUtil.getDeviceList()
 %>
@@ -10,15 +11,25 @@
 	<tr>
 		<td>
 			<div class="media">
-				<div class="device-icon device-icon-<%=device['icon']%> media-left"></div>
+				<img src="<%=media%>/images/deviceicon/<%=device['icon']%>.png" class="device-icon media-left" />
 				<div class="media-body">
-					<h4 class="media-heading"><%=device['name']%></4>
-					<p>MAC 地址: <%=devie['mac']%></p>
+					<h4 class="media-heading">
+					<%if commonUtil.isNilOrEmpty(device['name']) then%>
+						<%=device['mac']%>
+					<%else%>
+						<%=device['name']%>
+					<%end%>
+					</h4>
+					<p>MAC 地址: <%=device['mac']%></p>
+					<p>
+						连接方式：<% if device['type'] == "line" then%> <span>有线</span> <%else%> <span>无线</span> <%end%> |
+						在线时间：<%=device['uptime']%>
+					</p>
 				</div>
 			</div>
 		</td>
-		<td class="ip"><%=devie['ip']%></td>
-		<td class="conntype"><%=devie['type']%></td>
+		<td class="ip"><%=device['ip']%></td>
+		<td class="conntype"><%=device['type']%></td>
 		<td class="traffic"">
 			<p>325KB/s</p>
 			<p>5.5KB/s</p>
