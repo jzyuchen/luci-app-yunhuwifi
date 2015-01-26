@@ -1,80 +1,78 @@
-<%#
-LuCI - Lua Configuration Interface
-Copyright 2008 Steven Barth <steven@midlink.org>
-Copyright 2008-2012 Jo-Philipp Wich <xm@subsignal.org>
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
--%>
-
-<%+header%>
-
-<form method="post" action="<%=pcdata(luci.http.getenv("REQUEST_URI"))%>">
-	<div class="cbi-map">
-		<h2><a id="content" name="content"><%:Authorization Required%></a></h2>
-		<div class="cbi-map-descr">
-			<%:Please enter your username and password.%>
-			<%- if fuser then %>
-			<div class="error"><%:Invalid username and/or password! Please try again.%></div>
-			<br />
-			<% end -%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]><html class="ie6 oldie" lang="zh"><![endif]-->
+<!--[if IE 7]><html class="ie7 oldie" lang="zh"><![endif]-->
+<!--[if IE 8]><html class="ie8 oldie" lang="zh"><![endif]-->
+<!--[if gt IE 8]><!--> <html lang="zh-cn"> <!--<![endif]-->
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="edge" />
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<title>云狐路由 - YunhuWiFi</title>
+		<link href="<%=media%>/css/base.css" rel="stylesheet" />
+		<link href="<%=media%>/css/yunhu.css" rel="stylesheet" />
+		<link href="<%=media%>/css/login.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="header">
+			<div class="container">
+				<img src="<%=media%>/images/logo.png" class="logo" />
+				<ul class="login-nav">
+					<li><a href="http://www.yunhuwifi.com" target="_blank">访问官网</a></li>
+					<li><a href="http://www.yunhuwifi.com/download" target="_blank">手机客户端</a></li>
+					<li><a href="http://bbs.yunhuwifi.com" target="_blank">云狐社区</a></li>
+				</div>
+			</div>
 		</div>
-		<fieldset class="cbi-section"><fieldset class="cbi-section-node">
-			<div class="cbi-value">
-				<label class="cbi-value-title"><%:Username%></label>
-				<div class="cbi-value-field">
-					<input class="cbi-input-user" type="text" name="username" value="<%=duser%>" />
+		<div class="body">
+			<div class="container">
+				<h1>欢迎使用云狐路由</h1>
+				<div class="login-box">
+					<form id="loginForm" action="<%=luci.dispatcher.build_url("api/system/login")%>" method="POST">
+						<input id="name" name="name" type="hidden" />
+						<p id="errMsg">&nbsp;</p>
+						<p>
+							<input id="password" name="password" type="password" class="input-block" placeholder="请输入管理密码" />
+						</p>
+						<p>
+							<button id="btnLogin" type="submit" class="btn btn-block btn-primary">登陆</button>
+						</p>
+					</form>
 				</div>
 			</div>
-			<div class="cbi-value cbi-value-last">
-				<label class="cbi-value-title"><%:Password%></label>
-				<div class="cbi-value-field">
-					<input id="focus_password" class="cbi-input-password" type="password" name="password" />
-				</div>
+		</div>
+		<div class="footer">
+			<div class="container">
+				<p>&copy; 2014-2015 云狐路由器</p>
+				<p>
+					<a href="http://weibo.com/yunhuwifi">官方微博</a> |
+					<a href="http://weibo.com/yunhuwifi">官方微信</a> |
+					<a href="http://weibo.com/yunhuwifi">官方微博</a>
+				</p>
 			</div>
-		</fieldset></fieldset>
-	</div>
-
-	<div>
-		<input type="submit" value="<%:Login%>" class="cbi-button cbi-button-apply" />
-		<input type="reset" value="<%:Reset%>" class="cbi-button cbi-button-reset" />
-	</div>
-</form>
-<script type="text/javascript">//<![CDATA[
-	var input = document.getElementById('focus_password');
-	if (input)
-		input.focus();
-//]]></script>
-
-<%
-local uci  = require "luci.model.uci".cursor()
-local fs  = require "nixio.fs"
-local https_key = uci:get("uhttpd", "main", "key")
-local https_port = uci:get("uhttpd", "main", "listen_https")
-if type(https_port) == "table" then
-	https_port = https_port[1]
-end
-
-if https_port and fs.access(https_key) then
-	https_port = https_port:match("(%d+)$")
-%>
-
-<script type="text/javascript">//<![CDATA[
-	if (document.location.protocol != 'https:') {
-		var url = 'https://' + window.location.hostname + ':' + '<%=https_port%>' + window.location.pathname;
-		var img=new Image;
-		img.onload=function(){window.location = url};
-		img.src='https://' + window.location.hostname + ':' + '<%=https_port%>' + '<%=resource%>/cbi/up.gif?' + Math.random();;
-		setTimeout(function(){
-			img.src=''
-		}, 5000);
-	}
-//]]></script>
-
-<% end %>
-
-<%+footer%>
+		</div>
+		<script src="<%=media%>/js/jquery-1.8.3.js"></script>
+		<script src="<%=media%>/js/jquery.form.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				var options = {
+					beforeSubmit:function(){
+						$('#btnLogin').attr('disabled',"true").text("正在登录...");
+					},
+					success:function(result){
+						$('#btnLogin').removeAttr('disabled').text("登录");
+						if (result.code == 0){
+							location.href=result.info.url;
+						}
+						else{
+						}
+					},
+					error:function(){
+						$('#btnLogin').removeAttr('disabled').text("登录");
+						$("#errMsg").text("登陆失败");
+					}
+				};
+				$("#loginForm").ajaxForm(options);
+			})
+		</script>
+	</body>
+</html>

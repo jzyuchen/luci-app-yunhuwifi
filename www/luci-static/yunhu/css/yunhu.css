@@ -180,6 +180,9 @@ em{
 	color:#fff;
 	background-color:#d9534f;
 }
+.btn-block{
+	width:100%;
+}
 .pull-right{
 	float:right;
 }
@@ -244,11 +247,15 @@ td.action{
 	text-align:right;
 }
 input[type='text'], input[type='password'], select{
-	padding: 6px 0;
+	padding: 10px 0;
 	text-indent: 10px;
 	border:solid 1px #ddd;
 	font-family: "microsoft yahei";
 	font-size: 14px;
+}
+input[type='button'],input[type='reset'],input[type='submit'], button{
+	font-family: "microsoft yahei";
+	border: 1px solid;
 }
 .input-large{
 	width: 300px;
