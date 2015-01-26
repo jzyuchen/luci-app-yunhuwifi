@@ -138,6 +138,154 @@ function wifiNetworks()
     return result
 end
 
+function getWifiConnectedList(wifiIndex)
+	local result = {}
+	local network = LuciNetwork.init()
+	local wifiDev = network:get_wifidev(LuciUtil.split(_wifiNameForIndex(wifiIndex),".")[1])
+	for _, wifiNet in ipairs(wifiDev:get_wifinets()) do
+		for k, assoc in ipairs(wifiNet:assoclist()) do
+			result[#result+1] = assoc
+		end
+	end
+	
+	return result
+end
+
+function getWifiConnectList(wifiIndex)
+	local NixioFs = require("nixio.fs")
+	local device
+	if wifiIndex == 1 then
+		device = "ra0"
+	elseif wifiIndex == 2 then
+		device = "rai0"
+	else
+		return {}
+	end
+	
+	local tmpFile = "/tmp/wifi_" .. device
+	
+	LuciUtil.exec("iwinfo " .. device .. " assoclist >> " .. tmpFile)
+	local list = {}
+	if NixioFs.access(tmpFile) then
+		local fileHandler = io.open(tmpFile, 'r')
+		for line in fileHandler:lines() do
+			local mac = string.match(line, "%x+:%x+:%x+:%x+:%x+:%x+")
+			if mac then
+				list[#list+1] = mac
+			end
+		end
+		fileHandler:close()
+		
+	end
+	NixioFs.remove(tmpFile)
+	return list
+end
+
+function wifiNetwork(wifiDeviceName)
+    local network = LuciNetwork.init()
+    local wifiNet = network:get_wifinet(wifiDeviceName)
+    if wifiNet then
+        local dev = wifiNet:get_device()
+        if dev then
+            return {
+                id         = wifiDeviceName,
+                name       = wifiNet:shortname(),
+                up         = wifiNet:is_up(),
+                mode       = wifiNet:active_mode(),
+                ssid       = wifiNet:active_ssid(),
+                bssid      = wifiNet:active_bssid(),
+                encryption = wifiNet:active_encryption(),
+                encryption_src = wifiNet:get("encryption"),
+                frequency  = wifiNet:frequency(),
+                channel    = wifiNet:channel(),
+                cchannel   = wifiNet:confchannel(),
+                bw         = wifiNet:bw(),
+                cbw        = wifiNet:confbw(),
+                signal     = wifiNet:signal(),
+                quality    = wifiNet:signal_percent(),
+                noise      = wifiNet:noise(),
+                bitrate    = wifiNet:bitrate(),
+                ifname     = wifiNet:ifname(),
+                assoclist  = wifiNet:assoclist(),
+                country    = wifiNet:country(),
+                txpower    = wifiNet:txpower(),
+                txpoweroff = wifiNet:txpower_offset(),
+                key        = wifiNet:get("key"),
+                key1	   = wifiNet:get("key1"),
+                hidden     = wifiNet:get("hidden"),
+                device     = {
+                    up     = dev:is_up(),
+                    device = dev:name(),
+                    name   = dev:get_i18n()
+                }
+            }
+        end
+    end
+    return {}
+end
+
+function getWifiDeviceSignalDict(wifiIndex)
+    local result = {}
+    local assoclist = {}
+    if not (getWifiStatus(wifiIndex).up == 1) then
+        return result
+    end
+    if wifiIndex == 1 then
+        assoclist = wifiNetwork(_wifiNameForIndex(1)).assoclist or {}
+    else
+        assoclist = wifiNetwork(_wifiNameForIndex(2)).assoclist or {}
+    end
+    for mac, info in pairs(assoclist) do
+        if mac then
+            result[CommonUtil.formatMac(mac)] = 2*math.abs(tonumber(info.signal)-tonumber(info.noise))
+        end
+    end
+    return result
+end
+
+function getWifiStatus(wifiIndex)
+    local wifiNet = wifiNetwork(_wifiNameForIndex(wifiIndex))
+    return {
+        ['ssid'] = wifiNet["ssid"],
+        ['up'] = wifiNet["up"] and 1 or 0
+    }
+end
+
+function getWifiConnectDeviceList(wifiIndex)
+    local wifiUp
+    local assoclist = {}
+    if tonumber(wifiIndex) == 1 then
+        wifiUp = (getWifiStatus(1).up == 1)
+        assoclist = wifiNetwork(_wifiNameForIndex(1)).assoclist or {}
+    else
+        wifiUp = (getWifiStatus(2).up == 1)
+        assoclist = wifiNetwork(_wifiNameForIndex(2)).assoclist or {}
+    end
+    local dlist = {}
+    if wifiUp then
+        for mac, info in pairs(assoclist) do
+            table.insert(dlist, CommonUtil.formatMac(mac))
+        end
+    end
+    return dlist
+end
+
+function getAllWifiConnetDeviceList()
+    local result = {}
+    for index = 1,2 do
+        local wifiSignal = getWifiDeviceSignalDict(index)
+        local wifilist = getWifiConnectDeviceList(index)
+        for _, mac in pairs(wifilist) do
+            table.insert(result, {
+                    ['mac'] = CommonUtil.formatMac(mac),
+                    ['signal'] = wifiSignal[mac],
+                    ['wifiIndex'] = index
+                })
+        end
+    end
+    return result
+end
+
 function getAllWifiInfo()
     local infoList = {}
     local wifis = wifiNetworks()

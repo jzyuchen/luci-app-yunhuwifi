@@ -1,38 +1,35 @@
+<%
+	scripts = "<script type='text/javascript' src='" .. media .. "/js/module/device.js'></script>"
+%>
 <%+header%>
 <%
-	local commonUtil = require("yunhuwifi.CommonUtil")
+	local CommonUtil = require("yunhuwifi.CommonUtil")
 	local deviceUtil = require("yunhuwifi.DeviceUtil")
+	local WifiUtil = require("yunhuwifi.WifiUtil")
 	local deviceList = deviceUtil.getDeviceList()
+	
+	local NixioFs = require("nixio.fs")
+	if not NixioFs.access("/www/luci-static/yunhu/js/oui.js") then
+		CommonUtil.miOuiToJson()
+	end
 %>
+
 <table>
 	<tr>
+		<th>设备信息</th>
+		<th>互联网访问</th>
 	</tr>
 	<%for _, device in ipairs(deviceList) do%>
 	<tr>
 		<td>
 			<div class="media">
-				<img src="<%=media%>/images/deviceicon/<%=device['icon']%>.png" class="device-icon media-left" />
+				<img src="<%=media%>/images/deviceicon/unknown.png" data-mac="<%=CommonUtil.formatMac2(device['mac'])%>" class="device-icon media-left" />
 				<div class="media-body">
-					<h4 class="media-heading">
-					<%if commonUtil.isNilOrEmpty(device['name']) then%>
-						<%=device['mac']%>
-					<%else%>
-						<%=device['name']%>
-					<%end%>
-					</h4>
-					<p>MAC 地址: <%=device['mac']%></p>
-					<p>
-						连接方式：<% if device['type'] == "line" then%> <span>有线</span> <%else%> <span>无线</span> <%end%> |
-						在线时间：<%=device['uptime']%>
-					</p>
+					<h4 class="media-heading"><span id="mac_<%=string.gsub(device['mac'], ":", "_")%>"><%=device['nickname']%></span> | <a href="#" data-mac="<%=device['mac']%>" data-name="<%=device['nickname']%>" class="device-edit">备注</a></h4>
+					<p>MAC 地址: <%=device['mac']%> | 连接方式: <% if device['type'] == 1 then%> 有线连接 <% elseif device['type'] == 2 then%> 无线2.4G <%elseif device['type'] == 3 then %> 无线5G <%end%></p>
+					<p>IP 地址: <%=device['ip']%> | 在线时长: <%=device['uptime']%></p>
 				</div>
 			</div>
-		</td>
-		<td class="ip"><%=device['ip']%></td>
-		<td class="conntype"><%=device['type']%></td>
-		<td class="traffic"">
-			<p>325KB/s</p>
-			<p>5.5KB/s</p>
 		</td>
 		<td class="action">
 			<a href="#" class="switch switch-on"></a>
@@ -40,4 +37,19 @@
 	</tr>
 	<%end%>
 </table>
+<div id="edit_dialog" class="dialog">
+	<form action="<%=luci.dispatcher.build_url("api/device/set_name")%>" method="post">
+	<div class="dialog-title">修改备注</div>
+	<div class="dialog-body">
+		<p>
+			<input id="mac" name="mac" type="hidden" />
+			<input id="name" name="name" type="text" class="input-block" placeholder="备注名称" />
+		</p>
+	</div>
+	<div class="dialog-footer">
+		<input type="submit" class="btn btn-primary btn-dialog" value="保存" />
+		<input type="button" class="btn" value="关闭" />
+	</div>
+	</form>
+</div>
 <%+footer%>

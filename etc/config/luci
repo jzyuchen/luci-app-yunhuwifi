@@ -2,7 +2,7 @@
 config core 'main'
 	option resourcebase '/luci-static/resources'
 	option lang 'zh_cn'
-	option mediaurlbase '/luci-static/bootstrap'
+	option mediaurlbase '/luci-static/yunhu'
 
 config extern 'flash_keep'
 	option uci '/etc/config/'
@@ -25,5 +25,5 @@ config internal 'ccache'
 
 config internal 'themes'
 	option Bootstrap '/luci-static/bootstrap'
-	option YunhuWiFi '/luci-static/yunhuwifi'
+	option Yunhu '/luci-static/yunhu'
 

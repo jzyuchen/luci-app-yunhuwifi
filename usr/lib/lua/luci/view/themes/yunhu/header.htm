@@ -16,6 +16,9 @@ http.prepare_content("text/html")
 		<link href="<%=media%>/css/base.css" rel="stylesheet" />
 		<link href="<%=media%>/css/yunhu.css" rel="stylesheet" />
 		<link href="<%=media%>/css/device.css" rel="stylesheet" />
+		<% if css then%>
+			<%= css %>
+		<% end %>
 	</head>
 	<body>
 		<div class="nav">

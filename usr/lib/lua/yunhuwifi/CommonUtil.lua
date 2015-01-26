@@ -47,6 +47,63 @@ function isNilOrEmpty(str)
 	return (str == nil or str == "")
 end
 
+function isStringInArray(str, list)
+	if list then
+		for k, v in pairs(list) do
+			if str == v then
+				return true
+			end
+		end
+	end
+	
+	return false
+end
+
+function isMac(mac)
+	return not isNilOrEmpty(string.match(mac, "%x+:%x+:%x+:%x+:%x+:%x+"))
+end
+
+function formatMac2(mac)
+	if mac:len() >= 8 then
+		local upperMac = formatMac(mac)
+		local prefix = string.sub(upperMac, 0, 8)
+		return string.gsub(prefix, ":", "-")
+	end
+
+	return mac
+end
+
 function formatMac(mac)
 	return mac:upper()
+end
+
+function miOuiToJson()
+	local ouiFile = "/etc/oui"
+	local json = "/www/luci-static/yunhu/js/oui.json"
+	local NixioFs = require("nixio.fs")
+	
+	if not NixioFs.access(json) and NixioFs.access(ouiFile) then
+		local ouiFile = io.open(ouiFile, "r")
+		
+		local jsonFile = io.open(json, "w")
+		jsonFile:write("{")
+		if ouiFile then
+			local i = 0;
+			for line in ouiFile:lines() do
+				if line then
+					--local mac, company, icon = line:match("^(%S+) (%S+) ICON:(%S+)")
+					local mac, company, icon = line:match("^(%S+) (.+) ICON:device_list_(%S+)")
+					if i > 0 then
+						jsonFile:write(",")
+					end
+					if company then
+						company = string.gsub(company, "'", "\'")
+					end
+					jsonFile:write("\n", string.format("\"%s\" : { \"company\": \"%s\", \"icon\" : \"%s\"}", mac, company, icon))
+				end
+				i = i+1
+			end
+		end
+		jsonFile:write("\n", "}")
+	end
 end

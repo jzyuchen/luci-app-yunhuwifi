@@ -20,7 +20,7 @@ p{
 .nav{
 	position:absolute;
 	width:340px;
-	height:500px;
+	overflow:hidden;
 	background-color:#0a53a4;
 	float:left;
 }
@@ -52,6 +52,7 @@ p{
 }
 
 .nav .nav-list{
+
 }
 .nav .nav-list > li{
 	width:100%;
@@ -161,6 +162,24 @@ em{
 	background-color:#0a53a4;
 	text-align:center;
 }
+.btn{
+	padding: 10px 0;
+	width: 80px;
+	display:inline-block;
+	color:#fff;
+	text-align:center;
+	font-size:14px;
+	text-decoration:none;
+}
+.btn-primary{
+	color:#fff;
+	background-color:#0a53a4;
+	border:solid 1px #0a53a4;
+}
+.btn-remove{
+	color:#fff;
+	background-color:#d9534f;
+}
 .pull-right{
 	float:right;
 }
@@ -234,6 +253,9 @@ input[type='text'], input[type='password'], select{
 .input-large{
 	width: 300px;
 }
+.input-block{
+	width: 100%;
+}
 .control-group{
 	margin-bottom: 10px;
 }
@@ -261,17 +283,6 @@ input[type='text'], input[type='password'], select{
 	padding: 10px 0;
 	margin-bottom: 10px;
 }
-.btn-primary{
-	padding: 10px 0;
-	width: 160px;
-	color:#fff;
-	display:inline-block;
-	text-decoration:none;
-	font-size:14px;
-	background-color:#0a53a4;
-	text-align:center;
-	border:solid 1px #0a53a4;
-}
 .section-title{
 	font-family: normal;
 	border-bottom: solid 1px #ddd;
@@ -279,4 +290,25 @@ input[type='text'], input[type='password'], select{
 	font-size: 16px;
 	color:#0a53a4;
 	margin: 0 0 20px 0;
+}
+.dialog{
+	display:none;
+	border:solid 1px #ddd;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+.dialog .dialog-title{
+	padding: 10px;
+	color:#18px;
+	color:#000;
+	background-color:#f2f2f2;
+}
+.dialog .dialog-body{
+	padding: 10px;
+}
+.dialog .dialog-footer{
+	border-top:solid 1px #ddd;
+	background-color:#f2f2f2;
+	padding: 10px;
+	text-align:right;
 }

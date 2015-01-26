@@ -1,0 +1,12 @@
+<%
+	scripts = "<script type='text/javascript' src='" .. media .. "/js/module/system.js'></script>"
+%>
+<%+header%>
+<form id="upgradeForm" action="<%=luci.dispatcher.build_url("api/upgrade")%>" method="POST">
+	<div class="control-group">
+		<div class="controls">
+			<input type="submit" value="立即更新" class="btn btn-primary" />
+		</div>
+	</div>
+</form>
+<%+footer%>

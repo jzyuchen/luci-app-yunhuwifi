@@ -9,8 +9,8 @@ function index()
     page.sysauth_authenticator = "jsonauth"
     page.index = true
     entry({"api", "device"}, firstchild(), _(""), 500)
-    entry({"api", "device", "list"}, call("getDeviceList"), _(""), 501)
-    entry({"api", "device", "set_name"}, call("setDeviceName"), _(""), 502)
+    entry({"api", "device", "list"}, call("getDeviceList"), _(""), 501).sysauth = false
+    entry({"api", "device", "set_name"}, call("setDeviceName"), _(""), 502).sysauth = false
     entry({"api", "device", "black_list"}, call("getBlackList"), _(""), 503)
     entry({"api", "device", "set_device_black_list"}, call("setDeviceToBlackList"), _(""), 504)
     entry({"api", "device", "remove_device_black_list"}, call("removeDeviceFromBlackList"), _(""), 505)
@@ -32,13 +32,16 @@ function setDeviceName()
 	local mac = LuciHttp.formvalue("mac")
 	local name = LuciHttp.formvalue("name")
 	local result = {}
-	if not CommonUtil.isNilOrEmpty(mac) and isNilOrEmpty.isMac(mac) and not isNilOrEmpty.isNilOrEmpty(name) then
+	if CommonUtil.isMac(mac) then
+		DeviceUtil.setDeviceName(mac, name)
 		result['code'] = 0
-		DeviceUtil.setDeviceName(mac,name)
+		result['info'] = { mac = mac, name = name }
 	else
 		result['code'] = 1
-		result['message'] = _("bad argment.")
+		result['message'] = "bad argment."
 	end
+	
+	LuciHttp.prepare_content("application/json")
 	LuciHttp.write_json(result)
 end
 
@@ -57,6 +60,7 @@ function setDeviceToBlackList()
 		result['code'] = 1
 		result['message'] = _("bad argment.")
 	end
+	LuciHttp.prepare_content("application/json")
 	LuciHttp.write_json(result)
 end
 
@@ -70,5 +74,6 @@ function removeDeviceFromBlackList()
 		result['code'] = 1
 		result['message'] = _("bad argment.")
 	end
+	LuciHttp.prepare_content("application/json")
 	LuciHttp.write_json(result)
 end

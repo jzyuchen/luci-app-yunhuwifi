@@ -1,0 +1,12 @@
+<%
+	scripts = "<script type='text/javascript' src='" .. media .. "/js/module/system.js'></script>"
+%>
+<%+header%>
+<form id="rebootForm" action="<%=luci.dispatcher.build_url("api/reboot")%>" method="POST">
+	<div class="control-group">
+		<div class="controls">
+			<input type="submit" value="重启路由器" class="btn btn-primary" />
+		</div>
+	</div>
+</form>
+<%+footer%>
